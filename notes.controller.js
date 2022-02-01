@@ -1,7 +1,6 @@
 const fs = require('fs/promises')
 const path = require('path')
 const chalk = require('chalk')
-const {string} = require('yargs');
 
 const notesPath = path.join(__dirname, 'db.json')
 
@@ -44,6 +43,15 @@ async function removeNote(id) {
   console.log(chalk.bgGreen('Note removed!'))
 }
 
+async function changeNote(id, title) {
+  const notes = await getNotes()
+  const indexNote = notes.findIndex((index) => index.id === id)
+  notes[indexNote].title = title;
+
+  await saveNotes(notes)
+  console.log(chalk.bgGreen(`Note change Title: ${title}!`))
+}
+
 module.exports = {
-  addNote, printNotes, removeNote
+  addNote, getNotes, removeNote, changeNote
 }
